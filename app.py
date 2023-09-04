@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
-from werkzeug.utils import secure_filenamex
+from werkzeug.utils import secure_filename
 import os
 
 
@@ -22,7 +22,18 @@ def index():
         file = form.file.data
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),
                   app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
+
     return render_template("index.html", form=form)
+
+
+@app.route('/files', methods=['GET'])
+def files():
+    directory = 'static/images'
+    if not os.path.exists(directory):
+        return jsonify({"error": "Directory not found"})
+    files = os.listdir(directory)
+
+    return jsonify({"files": files})
 
 
 if __name__ == '__main__':
