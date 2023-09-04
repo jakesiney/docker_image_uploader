@@ -1,12 +1,28 @@
 from flask import Flask, render_template, request, redirect
+from flask_wtf import FlaskForm
+from wtforms import FileField, SubmitField
+from werkzeug.utils import secure_filenamex
 import os
 
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "secret"
+app.config['UPLOAD_FOLDER'] = "static/images"
 
 
-@app.route('/')
+class Uploadfileform(FlaskForm):
+    file = FileField("File")
+    submit = SubmitField("Submit")
+
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template("index.html")
+    form = Uploadfileform()
+    if form.validate_on_submit():
+        file = form.file.data
+        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                  app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
+    return render_template("index.html", form=form)
 
 
 if __name__ == '__main__':
