@@ -10,15 +10,25 @@
       <h1>I am excited to learn DevOps!!!</h1>
     </div>
     <div>
-      <form method="POST" enctype="multipart/form-data">
-        {{ form.hidden_tag() }} {{ form.file() }} {{ form.submit() }}
-      </form>
+      <h2>Upload a image, jpg, gif or png only.</h2>
+      {% for image in images %}
+      <img
+        src="{{ url_for('static', filename='uploads/' + image)}}"
+        width="250"
+      />
     </div>
     <br />
-    <form method="GET">
-      <button>
-        <a href="/files">Show Files</a>
-      </button>
-    </form>
+    <div>
+      <p>Upload</p>
+      <form
+        action="/upload_image"
+        ,
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <input type="file" name="image" accept="image/*" />
+        <input type="submit" value="Upload" />
+      </form>
+    </div>
   </body>
 </html>
