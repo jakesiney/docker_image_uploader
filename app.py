@@ -25,8 +25,8 @@ def index():
     return render_template('index.html', images=images)
 
 
-@app.route('/upload_image', methods=['POST'])
-def upload_file():
+@app.route('/upload', methods=['POST'])
+def upload():
     if 'file' not in request.files:
         return redirect('/')
     file = request.files['file']

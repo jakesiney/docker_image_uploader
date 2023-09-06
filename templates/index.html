@@ -3,32 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quote</title>
+    <title>Image Uploader</title>
+    <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
-    <div>
-      <h1>I am excited to learn DevOps!!!</h1>
+    <div class="header">
+      <h1>Image Uploader</h1>
+      <br />
+      <h2>This is a data persistence test page</h2>
     </div>
-    <div>
-      <h2>Upload a image, jpg, gif or png only.</h2>
-      {% for image in images %}
-      <img
-        src="{{ url_for('static', filename='uploads/' + image)}}"
-        width="250"
-      />
-    </div>
-    <br />
-    <div>
-      <p>Upload</p>
-      <form
-        action="/upload_image"
-        ,
-        method="POST"
-        enctype="multipart/form-data"
-      >
-        <input type="file" name="image" accept="image/*" />
+    <div class="subhead">
+      <h2>Upload an image, jpg, gif or png only.</h2>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" />
         <input type="submit" value="Upload" />
-      </form>
+        </div>
+    <div>
+      {% for image in images %}
+      <div class="image-grid">
+        <img src="{{ url_for('static', filename='images/' + image)}}" class="image"/>
+      </div>
+      {% endfor %}
     </div>
-  </body>
+    </body>
 </html>
