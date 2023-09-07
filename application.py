@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
-from werkzeug.utils import secure_filename
 import os
 
 
@@ -44,6 +43,6 @@ if __name__ == '__main__':
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
     application.run(
-        # debug=True,
-        # host="0.0.0.0"  # Listen for connections directed _to_ any address
+        debug=True,
+        host="0.0.0.0"  # Listen for connections directed _to_ any address
     )
