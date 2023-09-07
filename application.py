@@ -5,12 +5,12 @@ from werkzeug.utils import secure_filename
 import os
 
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 UPLOAD_FOLDER = "static/images"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+application.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 def allowed_file(filename):
@@ -18,14 +18,14 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/')
+@application.route('/')
 def index():
     files = os.listdir(UPLOAD_FOLDER)
     images = [file for file in files if allowed_file(file)]
     return render_template('index.html', images=images)
 
 
-@app.route('/upload', methods=['POST'])
+@application.route('/upload', methods=['POST'])
 def upload():
     if 'file' not in request.files:
         return redirect('/')
@@ -33,7 +33,8 @@ def upload():
     if file.filename == '':
         return redirect('/')
     if file and allowed_file(file.filename):
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        filename = os.path.join(
+            application.config['UPLOAD_FOLDER'], file.filename)
         file.save(filename)
         return redirect('/')
     return redirect('/')
@@ -42,7 +43,7 @@ def upload():
 if __name__ == '__main__':
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
-    app.run(
-        debug=True,
-        host="0.0.0.0"  # Listen for connections directed _to_ any address
+    application.run(
+        # debug=True,
+        # host="0.0.0.0"  # Listen for connections directed _to_ any address
     )
